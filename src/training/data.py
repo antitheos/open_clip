@@ -32,10 +32,13 @@ from open_clip import tokenize
 class CsvDataset(Dataset):
     def __init__(self, input_filename, transforms, img_key, caption_key, sep="\t"):
         logging.debug(f'Loading csv data from {input_filename}.')
-        df = pd.read_csv(input_filename, sep=sep)
+        df = pd.read_csv(input_filename, sep=",", encoding="utf-8")
 
         self.images = df[img_key].tolist()
         self.captions = df[caption_key].tolist()
+        print(input_filename)
+        print(len(self.images))
+        print(len(self.captions))
         self.transforms = transforms
         logging.debug('Done loading data.')
 
@@ -393,14 +396,15 @@ def get_wds_dataset(args, preprocess_img, is_train, epoch=0, floor=False):
 
 def get_csv_dataset(args, preprocess_fn, is_train, epoch=0):
     input_filename = args.train_data if is_train else args.val_data
-    assert input_filename
+    assert input_filename 
     dataset = CsvDataset(
         input_filename,
         preprocess_fn,
         img_key=args.csv_img_key,
         caption_key=args.csv_caption_key,
-        sep=args.csv_separator)
-    num_samples = len(dataset)
+        sep= args.csv_separator)
+ 
+    num_samples = len(dataset) 
     sampler = DistributedSampler(dataset) if args.distributed and is_train else None
     shuffle = is_train and sampler is None
 
