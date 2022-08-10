@@ -84,7 +84,7 @@ def main():
     args.tensorboard = 'tensorboard' in args.report_to or 'all' in args.report_to
     if is_master(args):
         args.tensorboard_path = os.path.join(args.logs, args.name, "tensorboard") if args.tensorboard else ''
-        args.checkpoint_path = os.path.join(args.logs, args.name, "checkpoints")
+        args.checkpoint_path = os.path.join(args.checkpoint_path, args.name, "checkpoints")
         for dirname in [args.tensorboard_path, args.checkpoint_path]:
             if dirname:
                 os.makedirs(dirname, exist_ok=True)
@@ -112,6 +112,9 @@ def main():
     else:
         logging.info(f'Running with a single process. Device {args.device}.')
 
+    #args.save_most_recent = True
+    #args.checkpoint_path = '/content/drive/Shareddrives/DiffusionTraining/archive/TorchOpenClip'
+    
     random_seed(args.seed, 0)
     model, preprocess_train, preprocess_val = create_model_and_transforms(
         args.model,
@@ -247,7 +250,7 @@ def main():
     if 'train' not in data:
         evaluate(model, data, start_epoch, args, writer)
         return
-
+    
     for epoch in range(start_epoch, args.epochs):
         if is_master(args):
             logging.info(f'Start epoch {epoch}')

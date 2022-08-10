@@ -128,11 +128,18 @@ def parse_args():
         "--save-frequency", type=int, default=1, help="How often to save checkpoints."
     )
     parser.add_argument(
+        "--checkpoint_path",
+        default="./logs",
+        type=str,
+        help="Where to save checkpoints",
+    )
+    parser.add_argument(
         "--save-most-recent",
         action="store_true",
         default=False,
         help="Always save the most recent model trained to epoch_latest.pt.",
     )
+    
     parser.add_argument(
         "--zeroshot-frequency", type=int, default=2, help="How often to run zero shot."
     )
