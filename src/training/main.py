@@ -84,7 +84,7 @@ def main():
     args.tensorboard = 'tensorboard' in args.report_to or 'all' in args.report_to
     if is_master(args):
         args.tensorboard_path = os.path.join(args.logs, args.name, "tensorboard") if args.tensorboard else ''
-        args.checkpoint_path = os.path.join(args.checkpoint_path, args.name, "checkpoints")
+        args.checkpoint_path = os.path.join(args.checkpoint_path, args.name, "check_points")
         for dirname in [args.tensorboard_path, args.checkpoint_path]:
             if dirname:
                 os.makedirs(dirname, exist_ok=True)
